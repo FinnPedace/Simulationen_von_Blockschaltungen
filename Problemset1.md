@@ -64,6 +64,7 @@ typisierte Funktion:
 def greet(name: str) -> str:
     return "Hello, " + name
 
+
 print(greet(42))
 ```
 
@@ -88,5 +89,101 @@ Found 1 error in 1 file (checked 3 source files)
 ```
 
 Damit wurde nachgewiesen, dass `mypy` den Typfehler vor dem Commit erkennt.
-Mit `print(greet("Finn"))` wäre der Aufruf typkorrekt und die Prüfung würde
+Mit `print(greet("Einstein"))` wäre der Aufruf typkorrekt und die Prüfung würde
 erfolgreich durchlaufen.
+
+### d) Weitere Python-Tools und Konfigurationsmöglichkeiten
+
+Bei der Recherche in der offiziellen Ruff- und mypy-Dokumentation wurden
+folgende nützliche Möglichkeiten gefunden.
+
+#### Ruff
+
+Ruff übernimmt sowohl Linting als auch Formatierung und unterstützt neben
+Python-Dateien auch Jupyter-Notebooks.
+
+```powershell
+# Linting ausführen
+uvx ruff check
+
+# Automatisch behebbare Linting-Probleme korrigieren
+uvx ruff check --fix
+
+# Formatierung prüfen, ohne Dateien zu verändern
+uvx ruff format --check
+
+# Dateien formatieren
+uvx ruff format
+
+# Erklärungen zu einer bestimmten Regel anzeigen
+uvx ruff rule NPY201
+```
+
+Zusätzlich zur bereits aktivierten NPY-Regelgruppe könnten beispielsweise
+folgende Regelgruppen aktiviert werden:
+
+- `B`: Bugbear-Regeln für typische Fehler und problematische Konstruktionen
+- `I`: Sortierung und Organisation von Imports
+- `UP`: Modernisierung älterer Python-Syntax
+- `RUF`: Ruff-spezifische Regeln
+- `ANN`: zusätzliche Prüfung von Typannotationen
+
+Die Auswahl erfolgt in `pyproject.toml` zum Beispiel so:
+
+```toml
+[tool.ruff.lint]
+extend-select = ["NPY", "B", "I", "UP", "RUF"]
+```
+
+Weitere hilfreiche Ruff-Einstellungen sind:
+
+```toml
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+[tool.ruff.lint.per-file-ignores]
+"notebooks/*.ipynb" = ["T201"]
+```
+
+Mit `target-version` wird die minimale Python-Version festgelegt. Ein
+`per-file-ignores`-Eintrag kann einzelne Regeln für bestimmte Dateien oder
+Verzeichnisse deaktivieren.
+
+#### mypy
+
+Mypy kann über eine `[tool.mypy]`-Sektion in `pyproject.toml` konfiguriert
+werden. Ein strengerer Einstieg wäre:
+
+```toml
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+```
+
+Für ein vollständig strenges Projekt kann später auch Folgendes verwendet
+werden:
+
+```toml
+[tool.mypy]
+strict = true
+```
+
+`strict = true` aktiviert viele optionale Prüfungen auf einmal. Deshalb ist es
+sinnvoll, zunächst mit einzelnen Optionen zu beginnen und bestehende Fehler
+schrittweise zu beheben.
+
+Weitere mögliche Python-Tools sind:
+
+- `pytest` für automatisierte Tests
+- `coverage.py` beziehungsweise `pytest-cov` für Testabdeckung
+- `pyright` oder `ty` als Alternativen zu `mypy` für statische Typprüfung
+- `pre-commit` zur automatischen Ausführung von Qualitätsprüfungen vor jedem
+    Commit
+
+Quellen:
+
+- [Ruff-Konfiguration](https://docs.astral.sh/ruff/configuration/)
+- [Ruff-Regeln](https://docs.astral.sh/ruff/rules/)
+- [mypy-Konfiguration](https://mypy.readthedocs.io/en/stable/config_file.html)
