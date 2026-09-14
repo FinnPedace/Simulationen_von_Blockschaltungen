@@ -202,3 +202,21 @@ Mit dem Befehl `git branch` wurden die vorhandenen Branches angezeigt:
 
 Der Stern `*` kennzeichnet den aktuell ausgewählten Branch. Ich befinde mich
 demnach momentan auf dem Branch `main`.
+
+### b) Branches zusammenführen
+
+Zunächst wurde auf den Zielbranch `main` gewechselt. Da `main` und
+`matrix_product` bereits unterschiedliche eigene Commits enthielten, war ein
+Fast-Forward-Merge nicht mehr möglich. Deshalb wurde ein normaler Merge
+verwendet:
+
+```powershell
+git switch main
+git merge matrix_product
+```
+
+Der Merge wurde ohne Konflikte durchgeführt und erzeugte den Merge-Commit:
+
+```text
+9baeffa Merge branch 'matrix_product'
+```

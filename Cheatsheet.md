@@ -52,6 +52,43 @@ Damit wird numerisch überprüft:
 
 $$\sigma_x\sigma_y = i\sigma_z$$
 
+## Matrixfunktionen
+
+Die Funktionen liegen im Paket unter `src/simulationen_von_blockschaltungen/`:
+
+```python
+from simulationen_von_blockschaltungen import matrix_product
+from simulationen_von_blockschaltungen.matrix_sum import matrix_sum
+```
+
+`matrix_product` multipliziert Matrizen in der angegebenen Reihenfolge. Mit
+`matrix_sum` werden Matrizen elementweise addiert. Beide Funktionen erwarten
+NumPy-Arrays:
+
+```python
+product = matrix_product([sigma_x, sigma_y])
+total = matrix_sum([sigma_x, sigma_y, sigma_z])
+```
+
+Für `matrix_product` müssen die Dimensionen kompatibel sein. Für `matrix_sum`
+müssen alle Matrizen dieselbe Form haben.
+
+## Gemeinsamer Funktionstest
+
+Beide Funktionen lassen sich nach einem Merge direkt aus dem Projektstamm
+prüfen:
+
+```powershell
+uv run python -c "import sys; import numpy as np; sys.path.insert(0, 'src'); from Pauli_matrices import pauli_x, pauli_y, pauli_z; from simulationen_von_blockschaltungen import matrix_product; from simulationen_von_blockschaltungen.matrix_sum import matrix_sum; sigma_x, sigma_y, sigma_z = pauli_x(), pauli_y(), pauli_z(); assert np.allclose(matrix_product([sigma_x, sigma_y]), 1j * sigma_z); assert np.array_equal(matrix_sum([sigma_x, sigma_y, sigma_z]), sigma_x + sigma_y + sigma_z); print('matrix_product: passed'); print('matrix_sum: passed')"
+```
+
+Erwartete Ausgabe:
+
+```text
+matrix_product: passed
+matrix_sum: passed
+```
+
 ## Jupyter-Notebooks
 
 Das Notebook liegt unter `notebooks/pauli_matrices.ipynb`.
@@ -142,6 +179,28 @@ git commit -m "Kurze Beschreibung"
 # Letzten Commit anzeigen
 git log -1 --oneline
 ```
+
+## Branches und Merge
+
+```powershell
+# Branches und aktiven Branch anzeigen
+git branch
+
+# Zielbranch auswählen
+git switch main
+
+# Fast-Forward, wenn main keine eigenen neuen Commits hat
+git merge --ff-only matrix_sum
+
+# Normaler Merge bei auseinanderentwickelten Branches
+git merge matrix_product
+
+# Historie kontrollieren
+git log --oneline --decorate --graph --all
+```
+
+Vor dem Merge sollte der Arbeitsbaum sauber sein:
+git status
 
 ## `.gitignore`
 
