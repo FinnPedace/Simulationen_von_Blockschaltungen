@@ -187,3 +187,18 @@ Quellen:
 - [Ruff-Konfiguration](https://docs.astral.sh/ruff/configuration/)
 - [Ruff-Regeln](https://docs.astral.sh/ruff/rules/)
 - [mypy-Konfiguration](https://mypy.readthedocs.io/en/stable/config_file.html)
+
+## Problemset 1.5
+
+### Branches mit `git branch` untersuchen
+
+Mit dem Befehl `git branch` wurden die vorhandenen Branches angezeigt:
+
+```text
+* main
+    matrix_product
+    matrix_sum
+```
+
+Der Stern `*` kennzeichnet den aktuell ausgewählten Branch. Ich befinde mich
+demnach momentan auf dem Branch `main`.
