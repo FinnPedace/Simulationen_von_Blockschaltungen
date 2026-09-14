@@ -4,9 +4,15 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
-
 from Pauli_matrices import pauli_x, pauli_y, pauli_z
 from simulationen_von_blockschaltungen import hello
+
+
+def greet(name: str) -> str:
+    return "Hello, " + name
+
+
+print(hello())
 
 
 print(hello())

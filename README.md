@@ -6,4 +6,3 @@ Blockschaltungen auf GPUs**.
 ## Autor
 
 **Finn Pedace**
-
